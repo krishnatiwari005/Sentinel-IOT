@@ -3,6 +3,7 @@ import { supabase } from '../lib/supabase';
 import { Shield, Eye, EyeOff, Loader2, Fingerprint, Lock, Terminal } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
+const DUST_PARTICLES = Array.from({ length: 40 });
 
 export const Login = () => {
   const [email, setEmail] = useState('');
@@ -67,6 +68,32 @@ export const Login = () => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col justify-center items-center p-4 relative overflow-hidden font-body">
+      {/* Floating Data Particles */}
+      <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
+        {DUST_PARTICLES.map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute rounded-full bg-accent-blue/50 shadow-[0_0_10px_rgba(0,255,255,0.8)]"
+            initial={{
+              left: `${Math.random() * 100}%`,
+              top: '110%',
+              width: Math.random() * 3 + 1,
+              height: Math.random() * 3 + 1,
+            }}
+            animate={{
+              top: '-10%',
+              opacity: [0, 1, 0],
+            }}
+            transition={{
+              duration: Math.random() * 15 + 10,
+              repeat: Infinity,
+              ease: "linear",
+              delay: Math.random() * 20,
+            }}
+          />
+        ))}
+      </div>
+
       {/* Dynamic Grid Background overlay */}
       <div className="absolute inset-0 pointer-events-none z-0 opacity-[0.03] bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_2px,3px_100%]"></div>
 
@@ -106,7 +133,7 @@ export const Login = () => {
           <div className="flex flex-col items-center justify-center">
             <h1 className="text-3xl font-black tech-mono tracking-[0.2em] text-white uppercase mb-2 flex items-center gap-2">
               <span className="text-accent-blue opacity-50">[</span>
-              A.E.G.I.S
+              S.E.N.T.I.N.E.L
               <span className="text-accent-blue opacity-50">]</span>
             </h1>
             <div className="flex items-center gap-3 text-xs tech-mono text-accent-green tracking-widest uppercase">
@@ -195,7 +222,7 @@ export const Login = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-full bg-black/50 border border-white/10 rounded-xl pl-11 pr-4 py-3.5 outline-none focus:border-accent-blue/50 focus:bg-accent-blue/5 focus:ring-1 focus:ring-accent-blue/50 transition-all text-sm font-mono text-white placeholder:text-white/20"
-                  placeholder="sys.admin@aegis.net"
+                  placeholder="xyz@gmail.com"
                 />
               </div>
             </motion.div>

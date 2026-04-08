@@ -3,7 +3,66 @@ import { supabase } from '../lib/supabase';
 import { Shield, Eye, EyeOff, Loader2, Fingerprint, Lock, Terminal } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const DUST_PARTICLES = Array.from({ length: 40 });
+const AdvancedBackground = () => (
+  <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
+    {/* Deep Space Background */}
+    <div className="absolute inset-0 bg-[#02050A]"></div>
+    
+    {/* 3D Perspective Grids */}
+    <div className="absolute inset-0 flex items-center justify-center opacity-[0.15]">
+      <div className="w-[300vw] h-[300vh] bg-[linear-gradient(rgba(0,255,255,0.3)_1px,transparent_1px),linear-gradient(90deg,rgba(0,255,255,0.3)_1px,transparent_1px)] bg-[size:60px_60px] [transform:perspective(1000px)_rotateX(75deg)_translateZ(-300px)_translateY(200px)]"></div>
+    </div>
+    <div className="absolute inset-0 flex items-center justify-center opacity-[0.08]">
+      <div className="w-[300vw] h-[300vh] bg-[linear-gradient(rgba(255,0,0,0.3)_1px,transparent_1px),linear-gradient(90deg,rgba(255,0,0,0.3)_1px,transparent_1px)] bg-[size:100px_100px] [transform:perspective(1000px)_rotateX(75deg)_translateZ(-400px)_translateY(400px)] animate-[pulse_8s_ease-in-out_infinite]"></div>
+    </div>
+
+    {/* Falling Data Streams */}
+    {Array.from({ length: 30 }).map((_, i) => (
+      <motion.div
+        key={`stream-${i}`}
+        className="absolute w-[1px] bg-gradient-to-b from-transparent via-accent-blue to-transparent shadow-[0_0_15px_rgba(0,255,255,1)]"
+        initial={{ left: `${Math.random() * 100}%`, top: '-20%', height: Math.random() * 150 + 50, opacity: 0 }}
+        animate={{ top: '120%', opacity: [0, 1, 0] }}
+        transition={{ duration: Math.random() * 4 + 3, repeat: Infinity, ease: "linear", delay: Math.random() * 10 }}
+      />
+    ))}
+
+    {/* Floating HUD Hexagons */}
+    {Array.from({ length: 15 }).map((_, i) => (
+      <motion.div
+        key={`hex-${i}`}
+        className="absolute inset-0 flex items-center justify-center opacity-30 text-accent-blue mix-blend-screen"
+        initial={{ rotate: Math.random() * 360, scale: Math.random() * 0.8 + 0.2, opacity: 0, x: (Math.random() - 0.5) * 500, y: (Math.random() - 0.5) * 500 }}
+        animate={{ 
+          rotate: `+=${Math.random() > 0.5 ? 90 : -90}deg`, 
+          opacity: [0, 0.4, 0],
+          scale: `+=${Math.random() * 0.3}`
+        }}
+        transition={{ 
+          duration: Math.random() * 20 + 20, 
+          repeat: Infinity, 
+          ease: "linear",
+          delay: Math.random() * 5 
+        }}
+      >
+        <svg 
+          style={{ width: Math.random() * 200 + 100, height: Math.random() * 200 + 100 }} 
+          viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="0.5"
+        >
+          <polygon points="50 1 95 25 95 75 50 99 5 75 5 25" />
+          <circle cx="50" cy="50" r="2" fill="currentColor" />
+        </svg>
+      </motion.div>
+    ))}
+
+    {/* Deep Ambient Glow */}
+    <motion.div 
+      animate={{ scale: [1, 1.2, 1], opacity: [0.1, 0.2, 0.1] }} 
+      transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+      className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-accent-blue/10 rounded-full blur-[150px]"
+    />
+  </div>
+);
 
 export const Login = () => {
   const [email, setEmail] = useState('');
@@ -68,34 +127,7 @@ export const Login = () => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col justify-center items-center p-4 relative overflow-hidden font-body">
-      {/* Floating Data Particles */}
-      <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
-        {DUST_PARTICLES.map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute rounded-full bg-accent-blue/50 shadow-[0_0_10px_rgba(0,255,255,0.8)]"
-            initial={{
-              left: `${Math.random() * 100}%`,
-              top: '110%',
-              width: Math.random() * 3 + 1,
-              height: Math.random() * 3 + 1,
-            }}
-            animate={{
-              top: '-10%',
-              opacity: [0, 1, 0],
-            }}
-            transition={{
-              duration: Math.random() * 15 + 10,
-              repeat: Infinity,
-              ease: "linear",
-              delay: Math.random() * 20,
-            }}
-          />
-        ))}
-      </div>
-
-      {/* Dynamic Grid Background overlay */}
-      <div className="absolute inset-0 pointer-events-none z-0 opacity-[0.03] bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_2px,3px_100%]"></div>
+      <AdvancedBackground />
 
       {/* Decorative ambient gradients */}
       <motion.div 

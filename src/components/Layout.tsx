@@ -39,9 +39,7 @@ export const Layout = () => {
       <Sidebar />
       <section 
         id="sentinel-command-vault"
-
-        style={{ position: 'absolute', left: '256px', right: 0, top: 0, bottom: 0, overflowY: 'auto', overflowX: 'hidden' }}
-        className="p-4 md:p-8 pb-24 md:pb-8 z-10"
+        className="absolute left-0 md:left-64 right-0 top-0 bottom-0 overflow-y-auto overflow-x-hidden p-4 md:p-8 pb-24 md:pb-8 z-10"
       >
         <AnimatePresence mode="wait">
           <motion.div

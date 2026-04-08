@@ -60,25 +60,44 @@ export const Login = () => {
             Secure Portal
           </h1>
           <p className="text-white/60">
-            {isRegistering ? 'Create your admin account' : 'Sign in to access your dashboard'}
+            {isRegistering ? 'Create your new administrator account' : 'Sign in to access your dashboard'}
           </p>
         </div>
 
         <div className="glass rounded-2xl p-8 relative">
+          {/* Tabs */}
+          <div className="flex bg-black/40 rounded-xl p-1 mb-8">
+            <button
+              onClick={() => { setIsRegistering(false); setError(null); }}
+              className={`flex-1 py-2 text-sm font-medium rounded-lg transition-all ${!isRegistering ? 'bg-white/10 text-white shadow' : 'text-white/50 hover:text-white'}`}
+            >
+              Sign In
+            </button>
+            <button
+              onClick={() => { setIsRegistering(true); setError(null); }}
+              className={`flex-1 py-2 text-sm font-medium rounded-lg transition-all ${isRegistering ? 'bg-white/10 text-white shadow' : 'text-white/50 hover:text-white'}`}
+            >
+              Create Account
+            </button>
+          </div>
+
           <form onSubmit={handleSubmit} className="space-y-6">
-            {error && (
-              <motion.div 
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-                className={`p-3 rounded-xl text-sm ${
-                  error.includes('successful') 
-                    ? 'bg-accent-green/20 text-accent-green' 
-                    : 'bg-accent-red/20 text-accent-red'
-                }`}
-              >
-                {error}
-              </motion.div>
-            )}
+            <AnimatePresence>
+              {error && (
+                <motion.div 
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  className={`p-3 rounded-xl text-sm ${
+                    error.includes('successful') 
+                      ? 'bg-accent-green/20 text-accent-green' 
+                      : 'bg-accent-red/20 text-accent-red'
+                  }`}
+                >
+                  {error}
+                </motion.div>
+              )}
+            </AnimatePresence>
 
             <div className="space-y-2">
               <label className="text-sm font-medium text-white/80">Email Address</label>
@@ -128,15 +147,6 @@ export const Login = () => {
               </div>
             </button>
           </form>
-
-          <div className="mt-6 text-center">
-            <button
-              onClick={() => setIsRegistering(!isRegistering)}
-              className="text-sm text-white/60 hover:text-white transition-colors"
-            >
-              {isRegistering ? 'Already have an account? Sign in' : "Don't have an account? Sign up"}
-            </button>
-          </div>
         </div>
       </motion.div>
     </div>

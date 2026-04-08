@@ -48,7 +48,7 @@ export const Sidebar = () => {
   ];
 
   return (
-    <aside className="w-64 h-screen bg-surface-dim/80 backdrop-blur-3xl border-r border-white/5 hidden md:flex flex-col fixed left-0 top-0 z-[100] font-body relative overflow-hidden">
+    <aside className="w-64 h-screen bg-surface-dim/80 backdrop-blur-3xl border-r border-white/5 hidden md:flex flex-col fixed left-0 top-0 z-[100] font-body overflow-hidden">
       {/* Background patterns */}
       <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[radial-gradient(#fff_1px,transparent_1px)] bg-[size:20px_20px]"></div>
       

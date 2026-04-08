@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { supabase } from '../lib/supabase';
 import { Shield, Eye, EyeOff, Loader2 } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 
 export const Login = () => {

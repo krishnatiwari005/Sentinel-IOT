@@ -188,7 +188,7 @@ export const Dashboard = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-h-[900px] overflow-y-auto pr-4 scrollbar-hide py-2">
             <AnimatePresence initial={false}>
               {detections.length === 0 ? (
-                <div className="col-span-2 sentinel-card p-32 flex flex-col items-center justify-center text-center">
+                <div className="col-span-1 sm:col-span-2 sentinel-card p-16 sm:p-32 flex flex-col items-center justify-center text-center">
                   <div className="relative mb-8">
                     <ShieldAlert size={64} className="text-white/5" />
                     <motion.div 

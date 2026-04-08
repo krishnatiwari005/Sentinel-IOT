@@ -16,7 +16,7 @@ function AppRoutes() {
     <Routes>
       <Route path="/login" element={session ? <Navigate to="/" replace /> : <Login />} />
       
-      <Route element={<Layout />}>
+      <Route element={session ? <Layout /> : <Navigate to="/login" replace />}>
         <Route path="/" element={<Dashboard />} />
         <Route path="/alerts" element={<LiveAlerts />} />
         <Route path="/history" element={<HistoryLog />} />

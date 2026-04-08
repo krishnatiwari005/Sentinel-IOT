@@ -39,7 +39,7 @@ export const Layout = () => {
       <Sidebar />
       <section 
         id="sentinel-command-vault"
-        className="md:pl-64 w-full min-h-screen p-4 md:p-8 pb-28 md:pb-8 relative z-10"
+        className="w-full min-h-screen p-4 pb-28 md:py-8 md:pr-8 md:pl-[18rem] relative z-10"
       >
         <AnimatePresence mode="wait">
           <motion.div

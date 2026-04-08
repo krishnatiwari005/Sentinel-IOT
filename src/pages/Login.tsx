@@ -34,9 +34,9 @@ const AdvancedBackground = () => (
         className="absolute inset-0 flex items-center justify-center opacity-30 text-accent-blue mix-blend-screen"
         initial={{ rotate: Math.random() * 360, scale: Math.random() * 0.8 + 0.2, opacity: 0, x: (Math.random() - 0.5) * 500, y: (Math.random() - 0.5) * 500 }}
         animate={{ 
-          rotate: `+=${Math.random() > 0.5 ? 90 : -90}deg`, 
+          rotate: [0, Math.random() > 0.5 ? 360 : -360], 
           opacity: [0, 0.4, 0],
-          scale: `+=${Math.random() * 0.3}`
+          scale: [0.5, Math.random() * 0.5 + 0.8]
         }}
         transition={{ 
           duration: Math.random() * 20 + 20, 

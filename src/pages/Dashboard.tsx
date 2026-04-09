@@ -8,6 +8,7 @@ import { ShieldAlert, Cpu, CheckCircle, Clock, AlertTriangle, Scan, Maximize2, A
 
 
 import { ImageViewerModal } from '../components/ImageViewerModal';
+import { LiveStream } from '../components/LiveStream';
 
 export const Dashboard = () => {
   const [detections, setDetections] = useState<Detection[]>([]);
@@ -184,6 +185,8 @@ export const Dashboard = () => {
                </div>
             </div>
           </div>
+          
+          <LiveStream />
           
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-h-[900px] overflow-y-auto pr-4 scrollbar-hide py-2">
             <AnimatePresence initial={false}>

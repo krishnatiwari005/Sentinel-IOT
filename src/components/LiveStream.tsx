@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Camera, Activity, ShieldCheck, WifiOff, Settings } from 'lucide-react';
+import { Camera, Activity, ShieldCheck, WifiOff, Settings, AlertTriangle, ExternalLink } from 'lucide-react';
 import { IpDiscovery } from './IpDiscovery';
 
 export const LiveStream = () => {
@@ -10,6 +10,7 @@ export const LiveStream = () => {
   const [streamUrl, setStreamUrl] = useState(`http://${streamIp}:81/stream`);
 
   useEffect(() => {
+    // Force refresh the stream URL when IP changes
     setStreamUrl(`http://${streamIp}:81/stream?t=${Date.now()}`);
     setIsError(false);
   }, [streamIp]);
@@ -21,7 +22,7 @@ export const LiveStream = () => {
   };
 
   return (
-    <div className="sentinel-card group overflow-hidden border-accent-blue/30 w-full">
+    <div className="sentinel-card group overflow-hidden border-accent-blue/30 w-full min-h-[400px]">
       <div className="fui-bracket fui-bracket-tl"></div>
       <div className="fui-bracket fui-bracket-tr"></div>
       <div className="fui-bracket fui-bracket-bl"></div>
@@ -38,7 +39,7 @@ export const LiveStream = () => {
             />
           </div>
           <span className="text-sm tech-mono !opacity-100 text-white/80 font-medium tracking-[0.2em]">
-            Primary_Optical_Link <span className="text-accent-blue">[{isError ? 'RETRY' : 'LIVE'}]</span>
+            Primary_Optical_Link <span className={isError ? "text-accent-red" : "text-accent-blue"}>[{isError ? 'SIGNAL_FAILED' : 'LIVE'}]</span>
           </span>
         </div>
         <div className="flex items-center gap-3">
@@ -51,8 +52,10 @@ export const LiveStream = () => {
            <div className="h-4 w-[1px] bg-white/10" />
            <div className="flex items-center gap-4 tech-mono text-[9px]">
               <div className="flex items-center gap-1.5">
-                <Activity size={10} className="text-accent-green" />
-                <span className="text-accent-green">Bitrate_8.2Mb/s</span>
+                <Activity size={10} className={isError ? "text-accent-red" : "text-accent-green"} />
+                <span className={isError ? "text-accent-red" : "text-accent-green"}>
+                  {isError ? "B_RATE_0.0" : "Bitrate_8.2Mb/s"}
+                </span>
               </div>
            </div>
         </div>
@@ -84,39 +87,55 @@ export const LiveStream = () => {
         {/* The Live Stream Image */}
         <img
           src={streamUrl}
+          key={streamUrl}
           alt="Live Feed"
-          className={`w-full h-full object-cover transition-all duration-1000 ${isError ? 'opacity-20 blur-sm grayscale' : 'opacity-80 group-hover:opacity-100'}`}
-          onError={() => {
-            if (!isError) {
-              setIsError(true);
-              // Don't set fallback URL immediately to allow Discovery UI to be useful
-            }
-          }}
+          className={`w-full h-full object-cover transition-all duration-1000 ${isError ? 'opacity-10 blur-xl grayscale' : 'opacity-80 group-hover:opacity-100'}`}
+          onError={() => setIsError(true)}
         />
 
         {isError && !showDiscovery && (
-          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/40 backdrop-blur-[2px]">
-            <WifiOff size={48} className="text-accent-red mb-4 opacity-50" />
-            <h3 className="text-sm tech-mono text-white mb-2 tracking-widest">SIGNAL_LOST_UHF</h3>
-            <p className="text-[10px] tech-mono text-white/40 mb-6 uppercase">Target: {streamIp}:81</p>
-            <button 
-              onClick={() => setShowDiscovery(true)}
-              className="px-6 py-2.5 bg-accent-blue/10 hover:bg-accent-blue/20 text-accent-blue rounded-xl border border-accent-blue/20 transition-all font-black uppercase text-[10px] tracking-[0.2em]"
-            >
-              Initialize Auto-Discovery
-            </button>
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-[#02050A]/80 backdrop-blur-sm p-6 text-center">
+            <WifiOff size={32} className="text-accent-red mb-4 animate-pulse" />
+            <h3 className="text-sm tech-mono text-white mb-1 tracking-widest uppercase">Encryption_Handshake_Failed</h3>
+            <p className="text-[10px] tech-mono text-white/40 mb-6 uppercase">Node_Access: {streamIp}</p>
+            
+            <div className="sentinel-card p-4 border-accent-red/30 max-w-xs space-y-4">
+               <div className="flex items-start gap-3 text-left">
+                  <AlertTriangle size={14} className="text-accent-red shrink-0 mt-0.5" />
+                  <p className="text-[9px] text-white/60 leading-relaxed font-bold uppercase tracking-tight">
+                    Browser security is blocking the local link. Since this app is on <span className="text-white">HTTPS</span>, it cannot reach a <span className="text-white">Local HTTP</span> camera directly.
+                  </p>
+               </div>
+               
+               <div className="flex flex-col gap-2">
+                 <button 
+                   onClick={() => setShowDiscovery(true)}
+                   className="w-full py-2.5 bg-accent-blue/10 hover:bg-accent-blue/20 text-accent-blue rounded-xl border border-accent-blue/20 transition-all font-black uppercase text-[10px] tracking-widest"
+                 >
+                   Manually Set IP Node
+                 </button>
+                 
+                 <a 
+                   href={`http://${streamIp}:81/stream`} 
+                   target="_blank" 
+                   rel="noopener noreferrer"
+                   className="w-full py-2.5 bg-white/5 hover:bg-white/10 text-white/40 rounded-xl border border-white/5 transition-all font-black uppercase text-[10px] tracking-widest flex items-center justify-center gap-2"
+                 >
+                   View Source Link <ExternalLink size={10} />
+                 </a>
+               </div>
+            </div>
           </div>
         )}
         
         {/* Tactical Overlays */}
-        <div className="scanner-line"></div>
+        {!showDiscovery && <div className="scanner-line"></div>}
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20 pointer-events-none"></div>
-        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] pointer-events-none"></div>
 
         {/* HUD Elements */}
         <div className="absolute top-6 left-6 tech-mono bg-black/40 backdrop-blur-md px-3 py-1.5 rounded border border-white/10 flex items-center gap-3">
            <div className={`w-2 h-2 rounded-full ${isError ? 'bg-accent-red' : 'bg-accent-blue'} animate-pulse`}></div>
-           {isError ? 'ERR_OFFLINE' : 'REC_08:24:12_UHF'}
+           {isError ? 'LINK_INTERRUPTED' : 'REC_08:24:12_UHF'}
         </div>
 
         <div className="absolute bottom-6 left-6 right-6 flex items-end justify-between">
@@ -125,9 +144,6 @@ export const LiveStream = () => {
                   <ShieldCheck size={14} className={isError ? "text-accent-red" : "text-accent-green"} />
                   <span className="text-white/60">Node_ID:</span>
                   <span className="text-accent-blue">ESP32-CAM-01</span>
-               </div>
-               <div className="text-[10px] tech-mono uppercase">
-                  SRC: {streamIp}:81/STREAM
                </div>
             </div>
             
@@ -142,25 +158,15 @@ export const LiveStream = () => {
                ))}
             </div>
         </div>
-
-        {/* Corner Decorations */}
-        <div className="absolute top-0 left-0 w-8 h-8 border-l-2 border-t-2 border-accent-blue/20"></div>
-        <div className="absolute top-0 right-0 w-8 h-8 border-r-2 border-t-2 border-accent-blue/20"></div>
-        <div className="absolute bottom-0 left-0 w-8 h-8 border-l-2 border-b-2 border-accent-blue/20"></div>
-        <div className="absolute bottom-0 right-0 w-8 h-8 border-r-2 border-b-2 border-accent-blue/20"></div>
       </div>
       
       <div className="p-4 bg-white/[0.02] flex items-center justify-between">
          <div className="flex gap-6">
             <div className="flex flex-col">
-               <span className="text-[8px] tech-mono !opacity-30">Status</span>
+               <span className="text-[8px] tech-mono !opacity-30">Network_UHF</span>
                <span className={`text-[10px] font-black uppercase ${isError ? 'text-accent-red' : 'text-accent-green'} tracking-tighter`}>
-                 {isError ? 'Link_Broken' : 'Link_Stable'}
+                 {isError ? 'Access_Denied' : 'Link_Sync_OK'}
                </span>
-            </div>
-            <div className="flex flex-col">
-               <span className="text-[8px] tech-mono !opacity-30">Security</span>
-               <span className="text-[10px] font-black uppercase text-white/60 tracking-tighter">WPA3_Encrypted</span>
             </div>
          </div>
          <div className="flex items-center gap-2">
@@ -171,7 +177,7 @@ export const LiveStream = () => {
                  className={`w-1/2 h-full ${isError ? 'bg-accent-red' : 'bg-accent-blue'}`}
                />
             </div>
-            <span className="text-[8px] tech-mono">{isError ? 'Reconnecting...' : 'Syncing...'}</span>
+            <span className="text-[8px] tech-mono">{isError ? 'Idle' : 'Syncing...'}</span>
          </div>
       </div>
     </div>

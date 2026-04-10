@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Camera, Activity, Zap, ShieldCheck, WifiOff, Settings } from 'lucide-react';
+import { Camera, Activity, ShieldCheck, WifiOff, Settings } from 'lucide-react';
 import { IpDiscovery } from './IpDiscovery';
 
 export const LiveStream = () => {

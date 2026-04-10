@@ -11,7 +11,6 @@ export const IpDiscovery: React.FC<IpDiscoveryProps> = ({ onFound, currentIp }) 
   const [isScanning, setIsScanning] = useState(false);
   const [progress, setProgress] = useState(0);
   const [status, setStatus] = useState<'idle' | 'scanning' | 'found' | 'not_found'>('idle');
-  const [discoveredIp, setDiscoveredIp] = useState<string | null>(null);
   const [manualIp, setManualIp] = useState(currentIp);
 
   const subnets = [
@@ -25,7 +24,6 @@ export const IpDiscovery: React.FC<IpDiscoveryProps> = ({ onFound, currentIp }) 
     setIsScanning(true);
     setStatus('scanning');
     setProgress(0);
-    setDiscoveredIp(null);
 
     const totalIps = subnets.length * 254;
     let checkedCount = 0;
@@ -83,7 +81,6 @@ export const IpDiscovery: React.FC<IpDiscoveryProps> = ({ onFound, currentIp }) 
   };
 
   const handleFound = (ip: string) => {
-    setDiscoveredIp(ip);
     setManualIp(ip);
     setStatus('found');
     onFound(ip);

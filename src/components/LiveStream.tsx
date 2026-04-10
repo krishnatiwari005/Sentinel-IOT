@@ -4,7 +4,7 @@ import { Camera, Activity, ShieldCheck, WifiOff, Settings } from 'lucide-react';
 import { IpDiscovery } from './IpDiscovery';
 
 export const LiveStream = () => {
-  const [streamIp, setStreamIp] = useState(import.meta.env.VITE_ESP32_IP || '10.93.223.134');
+  const [streamIp, setStreamIp] = useState(import.meta.env.VITE_ESP32_IP || '10.101.174.134');
   const [isError, setIsError] = useState(false);
   const [showDiscovery, setShowDiscovery] = useState(false);
   const [streamUrl, setStreamUrl] = useState(`http://${streamIp}:81/stream`);
